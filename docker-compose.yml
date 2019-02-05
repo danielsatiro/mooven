@@ -1,0 +1,21 @@
+version: '2'
+services:
+    php:
+        build: ./docker/php-fpm
+        ports:
+            - "9000:9000"
+        volumes:
+            - .:/var/www/api:cached
+            - ./docker/var/log/api:/var/www/api/var/log:cached
+        extra_hosts:
+            - "docker.host:127.0.0.1"
+    nginx:
+        build: ./docker/nginx
+        ports:
+            - "8080:80"
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./docker/var/log/nginx/:/var/log/nginx:cached
