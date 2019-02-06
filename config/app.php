@@ -226,4 +226,6 @@ return [
 
     ],
 
+    'htmlUrl' => env('HTML_URL', 'https://github.com'),
+
 ];

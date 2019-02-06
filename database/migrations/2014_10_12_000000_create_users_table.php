@@ -18,7 +18,6 @@ class CreateUsersTable extends Migration
             $table->string('login', 100)->unique();
             $table->string('name', 100);
             $table->string('avatar_url');
-            $table->string('html_url');
             $table->timestamps();
         });
     }

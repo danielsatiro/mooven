@@ -13,12 +13,11 @@ class CreateReposTable extends Migration
      */
     public function up()
     {
-        Schema::create('repos', function (Blueprint $table) {
+        Schema::create('repositories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('users_id');
             $table->string('name', 100);
             $table->string('description');
-            $table->string('html_url');
             $table->timestamps();
             $table->foreign('users_id')->references('id')->on('users');
         });
@@ -31,6 +30,6 @@ class CreateReposTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('repos');
+        Schema::dropIfExists('repositories');
     }
 }

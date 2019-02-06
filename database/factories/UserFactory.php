@@ -17,7 +17,6 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
     return [
         'login' => $faker->unique()->userName,
         'name' => $faker->name,
-        'avatar_url' => $faker->unique()->imageUrl(640, 480, 'people', true, 'avatar'),
-        'html_url' => $faker->unique()->url
+        'avatar_url' => $faker->unique()->imageUrl(640, 480, 'people', true, 'avatar')
     ];
 });
