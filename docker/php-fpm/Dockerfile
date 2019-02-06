@@ -37,7 +37,7 @@ RUN apk add --no-cache bash
 RUN rm -rf /var/cache/apk/* && rm -rf /tmp/* && \
     curl --insecure https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
 
-#ADD xdebug.ini  /etc/php7/conf.d/
+ADD xdebug.ini  /etc/php7/conf.d/
 
 ADD api.pool.conf /etc/php7/php-fpm.d/
 
