@@ -14,7 +14,7 @@ CREATE TABLE `users` (
    `updated_at` timestamp NULL DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY `users_login_unique` (`login`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DROP TABLE IF EXISTS `backend`.`repos`;
 CREATE TABLE `repos` (
@@ -28,7 +28,7 @@ CREATE TABLE `repos` (
    PRIMARY KEY (`id`),
    KEY `repos_users_id_foreign` (`users_id`),
    CONSTRAINT `repos_users_id_foreign` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE `migrations` (
    `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
