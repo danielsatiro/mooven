@@ -21,8 +21,12 @@ services:
         volumes:
             - .:/var/www/api:cached
             - ./docker/var/log/api:/var/www/api/var/log:cached
+        links:
+            - db
         extra_hosts:
             - "docker.host:127.0.0.1"
+        networks:
+            - internal
     nginx:
         build: ./docker/nginx
         ports:
@@ -33,6 +37,8 @@ services:
             - php
         volumes:
             - ./docker/var/log/nginx/:/var/log/nginx:cached
+        networks:
+            - internal
             
 networks:
     internal:
