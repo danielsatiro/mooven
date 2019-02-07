@@ -38,4 +38,52 @@ class RepositoryTest extends TestCase
     	$response = $this->getJson("/api/users/{$user->login}/repos");
         $response->assertStatus(404);   
     }
+
+    public function testCreateRepository()
+    {
+        $user = factory(\App\Models\User::class)->create();
+
+        $data = [
+            'name' => $this->faker->name,
+            'description' => $this->faker->text
+        ];
+        
+        $response = $this->postJson("/api/users/{$user->login}/repos", $data);
+        $response->assertStatus(201)
+            ->assertJsonStructure([
+                'id',
+                'name',
+                'description',
+                'html_url'
+            ]);  
+    }
+
+    public function testCreateRepositoryNotFound()
+    {
+        $data = [
+            'name' => '',
+            'description' => ''
+        ];
+        
+        $response = $this->postJson("/api/users/{$this->faker->name}/repos", $data);
+        $response->assertStatus(404);  
+    }
+
+    public function testCreateRepositoryFail()
+    {
+        $user = factory(\App\Models\User::class)->create();
+
+        $data = [
+            'name' => '',
+            'description' => ''
+        ];
+        
+        $response = $this->postJson("/api/users/{$user->login}/repos", $data);
+        $response->assertStatus(412)
+            ->assertJsonStructure([
+                'messages' => [
+                    'name'
+                ]                
+            ]);  
+    }
 }

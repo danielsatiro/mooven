@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Repository;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RepositoryController extends Controller
@@ -25,11 +26,29 @@ class RepositoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  string  $username
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $username)
     {
-        //
+        $data = $request->all();
+
+        $user = User::where('login', $username)
+            ->first()??abort(404);
+
+        $data['users_id'] = $user->id;
+        $data['login'] = $user->login;
+
+        $httpCode = 201;
+
+        try {
+            $repos = Repository::create($data);
+        } catch (\Exception $e) {
+            $httpCode = $e->getCode();
+            $repos = ['messages' => json_decode($e->getMessage())];
+        }
+        
+        return response()->json($repos, $httpCode);
     }
 
     /**
