@@ -20,6 +20,7 @@ class CreateReposTable extends Migration
             $table->string('description');
             $table->timestamps();
             $table->foreign('users_id')->references('id')->on('users');
+            $table->unique(['users_id', 'name']);
         });
     }
 
