@@ -17,5 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('users', 'UserController@store');
 Route::get('users/{username}', 'UserController@show');
+Route::post('users/{username}/repos', 'RepositoryController@store');
 Route::get('users/{username}/repos', 'RepositoryController@index');

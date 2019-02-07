@@ -24,6 +24,7 @@ CREATE TABLE `repositories` (
    `created_at` timestamp NULL DEFAULT NULL,
    `updated_at` timestamp NULL DEFAULT NULL,
    PRIMARY KEY (`id`),
+   UNIQUE KEY `repositories_users_id_name_unique` (`users_id`,`name`),
    KEY `repositories_users_id_foreign` (`users_id`),
    CONSTRAINT `repositories_users_id_foreign` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

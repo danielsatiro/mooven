@@ -36,4 +36,42 @@ class UserTest extends TestCase
     	$response = $this->getJson("/api/users/{$username}");
         $response->assertStatus(404);   
     }
+
+    public function testCreateUser()
+    {
+        $data = [
+            'login' => $this->faker->unique()->userName,
+            'name' => $this->faker->name,
+            'avatar_url' => $this->faker->unique()->imageUrl(640, 480, 'people', true, 'avatar')
+        ];
+        
+        $response = $this->postJson('/api/users', $data);
+        $response->assertStatus(201)
+            ->assertJsonStructure([
+                'id',
+                'login',
+                'name',
+                'avatar_url',
+                'html_url'
+            ]);  
+    }
+
+    public function testCreateUserFail()
+    {
+        $data = [
+            'login' => '',
+            'name' => '',
+            'avatar_url' => ''
+        ];
+        
+        $response = $this->postJson('/api/users', $data);
+        $response->assertStatus(412)
+            ->assertJsonStructure([
+                'messages' => [
+                    'login',
+                    'name',
+                    'avatar_url'
+                ]                
+            ]);  
+    }
 }

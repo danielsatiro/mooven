@@ -25,7 +25,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $httpCode = 201;
+
+        try {
+            $user = User::create($request->all());
+        } catch (\Exception $e) {
+            $httpCode = $e->getCode();
+            $user = ['messages' => json_decode($e->getMessage())];
+        }
+        
+        return response()->json($user, $httpCode);
     }
 
     /**

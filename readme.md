@@ -11,6 +11,8 @@ Address to access the App: http://localhost
 ```
 GET    | api/users/{username}           
 GET    | api/users/{username}/repos
+POST   | api/users
+POST   | api/users/{username}/repos
 ```
 Endpoints pre-registered
 ```
@@ -23,3 +25,4 @@ GET    | api/users/testeSilva/repos
 docker exec -it creditoo_php_1 bash        
 ./vendor/bin/phpunit
 ```
+PS: change the name 'creditoo_php_1' if your path is different
