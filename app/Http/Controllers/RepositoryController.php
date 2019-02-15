@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Repository;
 use App\Models\User;
+use App\Services\GitHubClient;
 use Illuminate\Http\Request;
 
 class RepositoryController extends Controller
@@ -16,8 +17,9 @@ class RepositoryController extends Controller
      */
     public function index($username)
     {
-        $repos = Repository::getUserRepositories($username);
-        $httpCode = count($repos)? 200: 404;
+        $repos = GitHubClient::getUserRepos($username);
+        $httpCode = $repos['httpCode'];
+        unset($repos['httpCode']);
 
         return response()->json($repos, $httpCode);
     }

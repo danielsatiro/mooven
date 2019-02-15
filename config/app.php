@@ -227,5 +227,6 @@ return [
     ],
 
     'htmlUrl' => env('HTML_URL', 'https://github.com'),
+    'apiGitHUbUrl' => env('API_GITHUB_URL', 'https://api.github.com'),
 
 ];

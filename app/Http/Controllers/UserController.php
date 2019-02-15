@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\GitHubClient;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -45,8 +46,9 @@ class UserController extends Controller
      */
     public function show($username)
     {
-        $user = User::where('login', $username)->first();
-        $httpCode = !empty($user)? 200: 404;
+        $user = GitHubClient::getUserProfile($username);
+        $httpCode = $user['httpCode'];
+        unset($user['httpCode']);
 
         return response()->json($user, $httpCode);
     }
