@@ -226,7 +226,11 @@ return [
 
     ],
 
-    'htmlUrl' => env('HTML_URL', 'https://github.com'),
-    'apiGitHUbUrl' => env('API_GITHUB_URL', 'https://api.github.com'),
+
+    'github' => [
+        'api_url' => env('GIT_API_URL', 'https://api.github.com'),
+        'html_url' => env('GIT_HTML_URL', 'https://github.com'),
+        'api_timeout' => env('GIT_API_TIMEOUT', 30)
+    ],
 
 ];

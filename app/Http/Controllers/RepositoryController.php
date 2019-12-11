@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Repository;
-use App\Models\User;
-use App\Services\GitHubClient;
+
 use Illuminate\Http\Request;
+use App\Services\GithubClient;
 
 class RepositoryController extends Controller
 {
+    private $git;
+
+    public function __construct(GithubClient $git)
+    {
+        $this->git = $git;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,40 +23,32 @@ class RepositoryController extends Controller
      */
     public function index($username)
     {
-        $repos = GitHubClient::getUserRepos($username);
-        $httpCode = $repos['httpCode'];
-        unset($repos['httpCode']);
 
-        return response()->json($repos, $httpCode);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string  $username
+     * @param  string  $user
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $username)
+    public function store(Request $request, $user)
     {
         $data = $request->all();
 
-        $user = User::where('login', $username)
-            ->first()??abort(404);
-
-        $data['users_id'] = $user->id;
-        $data['login'] = $user->login;
-
-        $httpCode = 201;
+        $data['user'] = $user;
 
         try {
-            $repos = Repository::create($data);
+            Repository::updateOrCreate([
+                'user' => $user,
+                'name' => $data['name']
+            ], $data);
         } catch (\Exception $e) {
-            $httpCode = $e->getCode();
-            $repos = ['messages' => json_decode($e->getMessage())];
+            return back()->with('messages', json_decode($e->getMessage()));
         }
-        
-        return response()->json($repos, $httpCode);
+
+        return redirect(route('home'));
     }
 
     /**
@@ -79,11 +77,21 @@ class RepositoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Repository  $repository
+     * @param  \App\Models\Repository  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Repository $repository)
+    public function destroy($id)
     {
-        //
+        Repository::find($id)->delete();
+        return back()->with('status', "Repositório apagado com sucesso");
+    }
+
+    public function search(Request $request)
+    {
+        $data = [
+            'result' => $this->git->search($request->get('q', ''))
+        ];
+
+        return view('repository.search_result', $data);
     }
 }

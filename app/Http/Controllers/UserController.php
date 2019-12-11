@@ -5,17 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Services\GitHubClient;
 use Illuminate\Http\Request;
+use App\Services\GithubClient;
 
 class UserController extends Controller
 {
+    private $git;
+
+    public function __construct(GithubClient $git)
+    {
+        $this->git = $git;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user)
     {
-        //
+        $userRepos = $this->git->userRepos($user);
+
+        $data = [
+            'user' => $user,
+            'userRepos' => $userRepos
+        ];
+
+        return view('user.index', $data);
     }
 
     /**
@@ -34,7 +48,7 @@ class UserController extends Controller
             $httpCode = $e->getCode();
             $user = ['messages' => json_decode($e->getMessage())];
         }
-        
+
         return response()->json($user, $httpCode);
     }
 
