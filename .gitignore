@@ -9,5 +9,8 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-/docker/var
+/docker/var/
 /report
+/nbproject/
+var/
+docker/mysql/data/

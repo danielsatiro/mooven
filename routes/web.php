@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['as' => 'home', 'uses' => 'HomeController@index']);
+Route::get('/repos/search', ['as' => 'repos.search', 'uses' => 'RepositoryController@search']);
+Route::post('/repos/{user}', ['as' => 'repos.store', 'uses' => 'RepositoryController@store']);
+Route::delete('/repos/{id}', ['as' => 'repos.destroy', 'uses' => 'RepositoryController@destroy']);
+
+Route::get('/users/{user}/repos', ['as' => 'users.repos', 'uses' => 'UserController@index']);

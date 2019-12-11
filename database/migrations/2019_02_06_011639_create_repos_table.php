@@ -15,12 +15,10 @@ class CreateReposTable extends Migration
     {
         Schema::create('repositories', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('users_id');
+            $table->string('user');
             $table->string('name', 100);
-            $table->string('description');
             $table->timestamps();
-            $table->foreign('users_id')->references('id')->on('users');
-            $table->unique(['users_id', 'name']);
+            $table->unique(['user', 'name']);
         });
     }
 
